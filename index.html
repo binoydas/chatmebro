@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .chat-container {
+            width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px hsl(60, 10%, 94%);
+        }
+
+        .chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .chat-messages {
+            padding: 10px;
+            overflow-y: scroll;
+            max-height: 300px;
+            background-color: rgb(243, 239, 239);
+        }
+
+        .message {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-message {
+            background-color: #d1eafb;
+            align-self: flex-start;
+        }
+
+        .other-message {
+            background-color: #f3d7b6;
+            align-self: flex-end;
+        }
+
+        .message-text {
+            margin: 0;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .chat-input {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .input-box {
+            flex-grow: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .send-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .send-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>ChatMe</h2>
+        </div>
+        <div>
+            <ul id="msghistory" class="chat-messages"> </ul>
+        </div>
+        <div class="chat-input">
+            <input type="text" class="input-box" id="msg" placeholder="Type your message...">
+            <button onclick="sendmsg()" class="send-button" id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+
+        let socket = io();
+
+        function sendmsg() {
+
+            let msg = document.getElementById('msg').value;
+            socket.emit('chat', msg)
+            document.getElementById('msg').value = " ";
+        }
+
+
+        socket.on('chat_show', function (msg) {
+
+
+
+
+            let listItem = document.createElement('li');
+            listItem.textContent = msg
+            let msghistory = document.getElementById('msghistory');
+            msghistory.appendChild(listItem)
+
+        })
+
+    </script>
+    </body>
+
+</html>
